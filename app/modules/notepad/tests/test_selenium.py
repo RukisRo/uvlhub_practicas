@@ -5,6 +5,15 @@ from core.environment.host import get_host_for_selenium_testing
 from core.selenium.common import initialize_driver, close_driver
 
 
+import pytest
+import time
+import json
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+
+
 def test_notepad_index():
 
     driver = initialize_driver()
@@ -29,6 +38,8 @@ def test_notepad_index():
 
         # Close the browser
         close_driver(driver)
+
+
 
 
 # Call the test function
