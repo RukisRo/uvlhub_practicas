@@ -6,6 +6,7 @@ from app import db
 from app.modules.profile import profile_bp
 from app.modules.profile.forms import UserProfileForm
 from app.modules.profile.services import UserProfileService
+from flask import flash
 
 @profile_bp.route("/profile/edit", methods=["GET", "POST"])
 @login_required
@@ -81,13 +82,18 @@ def view_profile(user_id):
         total_datasets=total_datasets_count
     )
 
-
 @profile_bp.route('/profile/search', methods=['GET'])
 @login_required
 def search_user():
-    query = request.args.get('query', '').strip()  # Toma el término de búsqueda del formulario
+    query = request.args.get('query', '').strip()  # Elimina espacios al principio y al final del término de búsqueda
 
+    if not query:
+        users = []
+        flash("Please enter a search term", category="info")
+        return render_template('profile/search_results.html', users=users, query=query, no_results=True)
+
+    # Si hay un término de búsqueda, realiza la búsqueda normalmente
     service = UserProfileService()
     users = service.search_users(query)  # Realiza la búsqueda en el servicio
 
-    return render_template('profile/search_results.html', users=users, query=query)
+    return render_template('profile/search_results.html', users=users, query=query, no_results=False)

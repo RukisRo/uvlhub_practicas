@@ -1,7 +1,13 @@
 {% extends "base_template.html" %}
 
 {% block content %}
-    <h2>Search results for "{{ query }}"</h2>
+    <h2>Search results for 
+        {% if query %}
+            "{{ query }}"
+        {% else %}
+            (No search term provided)
+        {% endif %}
+    </h2>
     
     {% if users %}
         <ul class="list-group">
@@ -14,6 +20,10 @@
             {% endfor %}
         </ul>
     {% else %}
-        <p>No users found matching "{{ query }}"</p>
+        {% if query %}
+            <p>No profiles found matching "{{ query }}"</p>
+        {% else %}
+            <p>No profiles found</p>
+        {% endif %}
     {% endif %}
 {% endblock %}
